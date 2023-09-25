@@ -139,6 +139,7 @@
                     </uploadRepoSnapshot>
 
                     <values>
+                        <yamlFile>${project.basedir}/${project.name}/values.yaml</yamlFile>
                         <yamlFile>${project.basedir}/${project.name}/service-values.yaml</yamlFile>
                     </values>
                 </configuration>
