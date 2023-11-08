@@ -11,7 +11,7 @@
 
     <groupId>com.danservice</groupId>
     <artifactId>dan-service-starter-parent</artifactId>
-    <version>0.0.6-SNAPSHOT</version>
+    <version>0.0.12-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>dan-service-starter-parent</name>
 
@@ -26,16 +26,17 @@
         <wiremock.version>3.0.1</wiremock.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 
-        <helm-maven-plugin.version>6.11.1</helm-maven-plugin.version>
+        <helm-maven-plugin.version>6.12.0</helm-maven-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
 
         <helm.repository.release.port>30600</helm.repository.release.port>
-        <helm.repository.release.host>minikube.nexus-dan-helm-release-http</helm.repository.release.host>
+        <helm.repository.release.host>nexus-dan-helm-release-http</helm.repository.release.host>
         <helm.repository.snapshot.port>30601</helm.repository.snapshot.port>
-        <helm.repository.snapshot.host>minikube.nexus-dan-helm-snapshot-http</helm.repository.snapshot.host>
+        <helm.repository.snapshot.host>nexus-dan-helm-snapshot-http</helm.repository.snapshot.host>
 
         <!-- TODO: Replace in build tools Jenkinsfile with release one if needed -->
-        <docker.repository>minikube.nexus-dan-docker-snapshot-http:30501</docker.repository>
+        <docker.repository.internal>nexus-dan-docker-snapshot-http:30501</docker.repository.internal>
+        <docker.repository.external>minikube.nexus-dan-docker-snapshot-http:30501</docker.repository.external>
     </properties>
 
     <dependencies>
@@ -129,7 +130,7 @@
                 <version>${dockerfile-maven-plugin.version}</version>
                 <configuration>
                     <tag>${project.version}</tag>
-                    <repository>${docker.repository}/repository/docker/${project.name}</repository>
+                    <repository>${docker.repository.internal}/repository/docker/${project.name}</repository>
                 </configuration>
             </plugin>
 
@@ -181,12 +182,12 @@
     <distributionManagement>
         <snapshotRepository>
             <id>nexus-server-snapshots</id>
-            <url>http://nexus-service-web-ui:8081/repository/maven-snapshots/</url>
+            <url>http://nexus-rm:8081/nexus/repository/maven-snapshots/</url>
         </snapshotRepository>
 
         <repository>
             <id>nexus-server-releases</id>
-            <url>http://nexus-service-web-ui:8081/repository/maven-releases/</url>
+            <url>http://nexus-rm:8081/nexus/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 
