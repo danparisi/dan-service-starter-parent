@@ -5,13 +5,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.4</version>
+        <version>3.1.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>com.danservice</groupId>
     <artifactId>dan-service-starter-parent</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.6-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>dan-service-starter-parent</name>
 
@@ -26,7 +26,7 @@
         <wiremock.version>3.0.1</wiremock.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 
-        <helm-maven-plugin.version>6.10.1</helm-maven-plugin.version>
+        <helm-maven-plugin.version>6.11.1</helm-maven-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
 
         <helm.repository.release.port>30600</helm.repository.release.port>
@@ -149,7 +149,7 @@
                     <repositoryAddForceUpdate>true</repositoryAddForceUpdate>
                     <chartDirectory>${project.basedir}/${project.name}</chartDirectory>
                     <autoDetectLocalHelmBinary>false</autoDetectLocalHelmBinary>
-                    <helmDownloadUrl>https://get.helm.sh/helm-v3.12.2-linux-amd64.tar.gz</helmDownloadUrl>
+                    <helmDownloadUrl>https://get.helm.sh/helm-v3.13.2-linux-amd64.tar.gz</helmDownloadUrl>
 
                     <!-- The plugin will choose the repository (Stable/Snapshot) from the version postfix (SNAPSHOT) -->
                     <uploadRepoStable>
