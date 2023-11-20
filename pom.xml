@@ -11,7 +11,7 @@
 
     <groupId>com.danservice</groupId>
     <artifactId>dan-service-starter-parent</artifactId>
-    <version>0.0.12-SNAPSHOT</version>
+    <version>0.0.15-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>dan-service-starter-parent</name>
 
@@ -141,6 +141,7 @@
                 <configuration>
                     <!-- Allow HTTP registry -->
                     <insecure>true</insecure>
+                    <plainHttp>true</plainHttp>
                     <skipUpgrade>false</skipUpgrade>
                     <upgradeForce>true</upgradeForce>
                     <skipPushLogin>true</skipPushLogin>
