@@ -11,7 +11,7 @@
 
     <groupId>com.danservice</groupId>
     <artifactId>dan-service-starter-parent</artifactId>
-    <version>0.0.15-SNAPSHOT</version>
+    <version>0.0.16-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>dan-service-starter-parent</name>
 
@@ -33,6 +33,8 @@
         <helm.repository.release.host>nexus-dan-helm-release-http</helm.repository.release.host>
         <helm.repository.snapshot.port>30601</helm.repository.snapshot.port>
         <helm.repository.snapshot.host>nexus-dan-helm-snapshot-http</helm.repository.snapshot.host>
+
+        <helm.insecure-skip-tls-verify.enabled>true</helm.insecure-skip-tls-verify.enabled>
 
         <!-- TODO: Replace in build tools Jenkinsfile with release one if needed -->
         <docker.repository.internal>nexus-dan-docker-snapshot-http:30501</docker.repository.internal>
@@ -140,17 +142,17 @@
                 <version>${helm-maven-plugin.version}</version>
                 <configuration>
                     <!-- Allow HTTP registry -->
-                    <insecure>true</insecure>
                     <plainHttp>true</plainHttp>
                     <skipUpgrade>false</skipUpgrade>
                     <upgradeForce>true</upgradeForce>
                     <skipPushLogin>true</skipPushLogin>
                     <releaseName>${project.name}</releaseName>
-                    <chartVersion>${project.version}</chartVersion>
                     <upgradeWithInstall>true</upgradeWithInstall>
+                    <chartVersion>${project.version}</chartVersion>
                     <repositoryAddForceUpdate>true</repositoryAddForceUpdate>
-                    <chartDirectory>${project.basedir}/${project.name}</chartDirectory>
                     <autoDetectLocalHelmBinary>false</autoDetectLocalHelmBinary>
+                    <insecure>${helm.insecure-skip-tls-verify.enabled}</insecure>
+                    <chartDirectory>${project.basedir}/${project.name}</chartDirectory>
                     <helmDownloadUrl>https://get.helm.sh/helm-v3.13.2-linux-amd64.tar.gz</helmDownloadUrl>
 
                     <!-- The plugin will choose the repository (Stable/Snapshot) from the version postfix (SNAPSHOT) -->
