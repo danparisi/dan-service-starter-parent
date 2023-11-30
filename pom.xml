@@ -11,7 +11,7 @@
 
     <groupId>com.danservice</groupId>
     <artifactId>dan-service-starter-parent</artifactId>
-    <version>0.0.16-SNAPSHOT</version>
+    <version>0.0.17-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>dan-service-starter-parent</name>
 
@@ -38,7 +38,7 @@
 
         <!-- TODO: Replace in build tools Jenkinsfile with release one if needed -->
         <docker.repository.internal>nexus-dan-docker-snapshot-http:30501</docker.repository.internal>
-        <docker.repository.external>minikube.nexus-dan-docker-snapshot-http:30501</docker.repository.external>
+        <docker.repository.external>nexus-dan-docker-snapshot-http.k8s.local:30501</docker.repository.external>
     </properties>
 
     <dependencies>
