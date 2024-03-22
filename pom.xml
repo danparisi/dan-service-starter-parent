@@ -142,6 +142,7 @@
                         <publishRegistry>
                             <username>jenkins</username>
                             <password>jenkins</password>
+                            <url>${docker.repository.internal}</url>
                         </publishRegistry>
                     </docker>
 
