@@ -5,20 +5,20 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.3</version>
+        <version>3.2.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>com.danservice</groupId>
     <artifactId>dan-service-starter-parent</artifactId>
-    <version>0.0.23</version>
+    <version>0.0.32</version>
     <packaging>pom</packaging>
-    <name>dan-service-starter-parent</name>
 
     <properties>
         <!-- Pipeline properties -->
         <helm.chart.enabled>false</helm.chart.enabled>
         <docker.image.enabled>false</docker.image.enabled>
+        <native.image.enabled>false</native.image.enabled>
 
         <java.version>21</java.version>
         <spring-cloud.version>2023.0.0</spring-cloud.version>
@@ -39,10 +39,18 @@
 
         <!-- TODO: Replace in build tools Jenkinsfile with release one if needed -->
         <docker.repository.internal>nexus-dan-docker-snapshot-http:30501</docker.repository.internal>
-        <docker.repository.external>nexus-dan-docker-snapshot-http.k8s.local:30501</docker.repository.external>
+
+        <docker.repository.external.username>jenkins</docker.repository.external.username>
+        <docker.repository.external.password>jenkins</docker.repository.external.password>
+        <docker.repository.external.url>nexus-dan-docker-snapshot-http.k8s.local:30501</docker.repository.external.url>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -76,13 +84,13 @@
             </dependency>
 
             <dependency>
-                <groupId>com.github.tomakehurst</groupId>
+                <groupId>org.wiremock</groupId>
                 <artifactId>wiremock</artifactId>
                 <version>${wiremock.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>com.github.tomakehurst</groupId>
+                <groupId>org.wiremock</groupId>
                 <artifactId>wiremock-standalone</artifactId>
                 <version>${wiremock.version}</version>
                 <scope>test</scope>
@@ -118,9 +126,38 @@
             </plugin>
 
             <plugin>
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+                <configuration>
+                    <debug>true</debug>
+                    <verbose>true</verbose>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <image>
+                        <publish>true</publish>
+                        <pullPolicy>IF_NOT_PRESENT</pullPolicy>
+                        <tags>
+                            <tag>${docker.repository.external.url}/repository/docker/${project.name}:${project.version}
+                            </tag>
+                        </tags>
+                        <name>${docker.repository.external.url}/repository/docker/${project.name}</name>
+                    </image>
+
+                    <docker>
+                        <tlsVerify>false</tlsVerify>
+
+                        <publishRegistry>
+                            <username>${docker.repository.external.username}</username>
+                            <password>${docker.repository.external.password}</password>
+                            <url>${docker.repository.external.url}</url>
+                        </publishRegistry>
+                    </docker>
+
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -136,6 +173,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <!--Maven support for Docker integration. We configure the image to be part of the specified Docker repository,
                 specify the image tag based on the build version and also add the new build as 'latest'.-->
