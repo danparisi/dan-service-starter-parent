@@ -5,15 +5,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.3</version>
+        <version>3.2.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>com.danservice</groupId>
     <artifactId>dan-service-starter-parent</artifactId>
-    <version>0.0.23</version>
+    <version>0.0.24-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>dan-service-starter-parent</name>
 
     <properties>
         <!-- Pipeline properties -->
@@ -43,6 +42,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -76,13 +80,13 @@
             </dependency>
 
             <dependency>
-                <groupId>com.github.tomakehurst</groupId>
+                <groupId>org.wiremock</groupId>
                 <artifactId>wiremock</artifactId>
                 <version>${wiremock.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>com.github.tomakehurst</groupId>
+                <groupId>org.wiremock</groupId>
                 <artifactId>wiremock-standalone</artifactId>
                 <version>${wiremock.version}</version>
                 <scope>test</scope>
@@ -118,9 +122,29 @@
             </plugin>
 
             <plugin>
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <image>
+                        <publish>true</publish>
+                        <name>${docker.repository.internal}/repository/docker/${project.artifactId}</name>
+                    </image>
+
+                    <docker>
+                        <host>tcp://localhost:2375</host>
+                        <tlsVerify>false</tlsVerify>
+
+                        <publishRegistry>
+                            <username>jenkins</username>
+                            <password>jenkins</password>
+                        </publishRegistry>
+                    </docker>
+
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -136,6 +160,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <!--Maven support for Docker integration. We configure the image to be part of the specified Docker repository,
                 specify the image tag based on the build version and also add the new build as 'latest'.-->
