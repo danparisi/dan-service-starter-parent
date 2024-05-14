@@ -11,7 +11,7 @@
 
     <groupId>com.danservice</groupId>
     <artifactId>dan-service-starter-parent</artifactId>
-    <version>0.0.34</version>
+    <version>0.0.35</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -36,9 +36,6 @@
         <helm.repository.snapshot.host>nexus-dan-helm-snapshot-http</helm.repository.snapshot.host>
 
         <helm.insecure-skip-tls-verify.enabled>true</helm.insecure-skip-tls-verify.enabled>
-
-        <!-- TODO: Replace in build tools Jenkinsfile with release one if needed -->
-        <docker.repository.internal>nexus-dan-docker-snapshot-http:30501</docker.repository.internal>
 
         <docker.repository.external.username>jenkins</docker.repository.external.username>
         <docker.repository.external.password>jenkins</docker.repository.external.password>
@@ -182,7 +179,7 @@
                 <version>${dockerfile-maven-plugin.version}</version>
                 <configuration>
                     <tag>${project.version}</tag>
-                    <repository>${docker.repository.internal}/repository/docker/${project.name}</repository>
+                    <repository>${docker.repository.external.url}/repository/docker/${project.name}</repository>
                 </configuration>
             </plugin>
 
